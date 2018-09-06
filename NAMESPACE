@@ -1,0 +1,4 @@
+useDynLib(coreCollection)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
+importFrom(R6, R6Class)

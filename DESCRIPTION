@@ -1,0 +1,13 @@
+Package: coreCollection
+Type: Package
+Title: Core Collection
+Version: 0.1.0
+Author: Matthijs Brouwer
+Maintainer: Matthijs Brouwer <matthijs.brouwer@wur.nl>
+Description: Core Collection
+    Create Core Collection.
+License: ...
+Encoding: UTF-8
+LazyData: true
+LinkingTo: Rcpp
+Imports: Rcpp
