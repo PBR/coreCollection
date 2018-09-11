@@ -23,55 +23,6 @@ setOldClass("dist")
   cat("==========\n")
 }
 
-.computeRandomSelectionCoreCollection <- function(object) {
-  #get data
-  dm <- as.matrix(object$distanceMatrix)
-  preselected <- match(object$preselected, labels(object$distanceMatrix))-1
-  n <- object$n
-  return(computeRandomSelection(dm, n, preselected))
-}
-
-.computeAdjustedSelectionCoreCollection <- function(object, groups) {
-  #compute adjusted group with correct method
-  dm <- as.matrix(object$distanceMatrix)
-  if(object$adjustedGroupMethod=="split") {
-    preselected <- match(object$preselected, labels(object$distanceMatrix))-1
-    return(computeAdjustedSelectionUsingSplitMethod(dm, groups, preselected))
-  } else if(object$adjustedGroupMethod=="recompute") {
-    adjustedSelected <- rownames(object$randomSelected[which(object$randomSelected[,"preselects"]==0),])
-    adjustedSelected <- c(adjustedSelected, object$preselected)
-    adjustedSelected <- match(adjustedSelected, labels(object$distanceMatrix))-1
-    return(computeAdjustedSelectionUsingRecomputeMethod(dm, adjustedSelected))
-  } else {
-    stop(paste0("unknown adjustedGroupMethod ",object$adjustedGroupMethod))
-  }
-}
-
-.computeCoreSelectionCoreCollection <- function(object) {
-  dm <- as.matrix(object$distanceMatrix)
-  rawGroups <- object$adjustedBasedGroups
-  for(groupName in names(rawGroups)) {
-    if(groupName %in% object$preselected) {
-      rawGroups[[groupName]] <- match(c(groupName), labels(object$distanceMatrix))-1
-    } else {
-      rawGroups[[groupName]] <- match(rawGroups[[groupName]], labels(object$distanceMatrix))-1
-    }
-  }
-  names(rawGroups) <- match(names(rawGroups), labels(object$distanceMatrix))-1
-  View(rawGroups)
-  #compute adjusted group with correct method
-  if(object$coreSelectMethod=="A-NE") {
-    #TODO
-    return(names(rawGroups))
-  } else if(object$coreSelectMethod=="A-NE") {
-    #TODO
-    return(names(rawGroups))
-  } else {
-    stop(paste0("unknown coreSelectMethod ",object$coreSelectMethod))
-  }
-}
-
-
 .CoreCollectionClass <- R6Class(
   classname="coreCollection",
   private = list(
@@ -295,6 +246,17 @@ setOldClass("dist")
     print = function(...) {
       .showCoreCollection(self,"CoreCollection object")
       invisible(self)
+    },
+    distance = function(value) {
+      if(missing(value)) {
+        method <- private$variableCoreSelectMethod
+      } else {
+        method <- as.character(value)
+        if(length(method)!=1 | !(method %in% private$constantAvailableCoreSelectMethods)) {
+          stop(paste0("can't use '",paste(method,collapse=", "),"' as distance method, allowed: '",paste(private$constantAvailableCoreSelectMethods, collapse="', '"),"'"))
+        }
+      }
+      return(.computeDistance(self, method))
     }
   ),
   active = list(

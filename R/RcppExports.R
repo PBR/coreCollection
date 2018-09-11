@@ -13,3 +13,11 @@ computeAdjustedSelectionUsingSplitMethod <- function(dist, groups, preselected) 
     .Call('_coreCollection_computeAdjustedSelectionUsingSplitMethod', PACKAGE = 'coreCollection', dist, groups, preselected)
 }
 
+computeCore <- function(method, dist, groups) {
+    .Call('_coreCollection_computeCore', PACKAGE = 'coreCollection', method, dist, groups)
+}
+
+computeDistance <- function(method, dist, entries) {
+    .Call('_coreCollection_computeDistance', PACKAGE = 'coreCollection', method, dist, entries)
+}
+

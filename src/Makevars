@@ -1,0 +1,2 @@
+SOURCES = $(wildcard selection/*.cpp method/*.cpp algorithm/*.cpp)
+OBJECTS = CoreCollection.o RcppExports.o $(SOURCES:.cpp=.o)
