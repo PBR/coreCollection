@@ -6,7 +6,10 @@
 
 class CoreAlgorithm {
   public:
-    static Rcpp::IntegerVector getCore (CoreMethod &m);
+    virtual Rcpp::IntegerVector getCore (CoreMethod &m) {
+      std::cout << "Call to default getCore, should not happen!" << std::endl;
+      return NULL;
+    }
     CoreAlgorithm();
 };
 

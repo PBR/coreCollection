@@ -6,7 +6,4 @@ CoreAlgorithm::CoreAlgorithm() {
 
 }
 
-Rcpp::IntegerVector CoreAlgorithm::getCore (CoreMethod &m) {
-  return m.getInitial();
-}
 

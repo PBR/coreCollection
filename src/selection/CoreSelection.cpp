@@ -4,8 +4,6 @@ using namespace Rcpp;
 
 
 double estimateRadius(Rcpp::NumericMatrix & dist, int n) {
-  //seed
-  srand ((unsigned) time(NULL)); // seed the generator
   //must be doubles
   double* d = REAL(dist);
   //full number
@@ -267,3 +265,6 @@ Rcpp::IntegerVector CoreSelection::computeRandomSelection(Rcpp::NumericMatrix & 
   return createSelectionResult(dist, selected);
 }
 
+void CoreSelection::initialise() {
+  srand ((unsigned) time(NULL)); // seed the generator
+}

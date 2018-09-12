@@ -2,12 +2,14 @@
 #include "selection/CoreSelection.h"
 #include "method/CoreMethodAccessionNearestEntry.h"
 #include "method/CoreMethodEntryNearestEntry.h"
-#include "algorithm/CoreAlgorithm.h"
+#include "method/CoreMethodEntryEntry.h"
+#include "algorithm/CoreAlgorithmRandomDescent.h"
 
 using namespace Rcpp;
 
 // [[Rcpp::export]]
 Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix & dist, int requiredN, Rcpp::IntegerVector & preselected) {
+  CoreSelection::initialise();
   return CoreSelection::computeRandomSelection(dist, requiredN, preselected);
 }
 
@@ -56,26 +58,34 @@ Rcpp::IntegerVector computeAdjustedSelectionUsingSplitMethod(Rcpp::NumericMatrix
 
 
 // [[Rcpp::export]]
-Rcpp::IntegerVector computeCore(std::string method, Rcpp::NumericMatrix & dist, Rcpp::List & groups) {
-  CoreAlgorithm a;
-  if(method==METHOD_ACCESSION_NEAREST_ENTRY) {
-    CoreMethodAccessionNearestEntry m(dist, groups);
-    m.getInitial();
-    return a.getCore(m);
-  } else if(method==METHOD_ENTRY_NEAREST_ENTRY) {
-    CoreMethodEntryNearestEntry m(dist, groups);
-    return a.getCore(m);
+Rcpp::IntegerVector computeCore(std::string algorithm, std::string method, Rcpp::NumericMatrix & dist, Rcpp::List & groups) {
+  CoreAlgorithm* a;
+  CoreMethod* m;
+  if(algorithm==ALGORITHM_RANDOM_DESCENT) {
+    a = new CoreAlgorithmRandomDescent();
   } else {
     return NULL;
   }
+  if(method==METHOD_ACCESSION_NEAREST_ENTRY) {
+    m = new CoreMethodAccessionNearestEntry(dist, groups);
+  } else if(method==METHOD_ENTRY_NEAREST_ENTRY) {
+    m = new CoreMethodEntryNearestEntry(dist, groups);
+  } else if(method==METHOD_ENTRY_ENTRY) {
+    m = new CoreMethodEntryEntry(dist, groups);
+  } else {
+    return NULL;
+  }
+  return a->getCore(*m);
 }
 
 // [[Rcpp::export]]
-double computeDistance(std::string method, Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & entries) {
+double computeMeasure(std::string method, Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & c) {
   if(method==METHOD_ACCESSION_NEAREST_ENTRY) {
-    return CoreMethodAccessionNearestEntry::distance(dist,entries);
+    return CoreMethodAccessionNearestEntry::measure(dist,c);
   } else if(method==METHOD_ENTRY_NEAREST_ENTRY) {
-    return CoreMethodEntryNearestEntry::distance(dist,entries);
+    return CoreMethodEntryNearestEntry::measure(dist,c);
+  } else if(method==METHOD_ENTRY_ENTRY) {
+    return CoreMethodEntryEntry::measure(dist,c);
   } else {
     return 0;
   }

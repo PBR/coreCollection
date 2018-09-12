@@ -11,10 +11,12 @@ class CoreMethodAccessionNearestEntry: public CoreMethod {
       return getDefaultInitial();
     }
   public:
-    static double distance (Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & entries);
     Rcpp::IntegerVector getInitial() {
       return getLocalInitial();
     }
+    static double measure (Rcpp::NumericMatrix & dm, Rcpp::IntegerVector & c);
+    double measure (Rcpp::IntegerVector & c);
+    bool improvement (double m1, double m2);
     CoreMethodAccessionNearestEntry(Rcpp::NumericMatrix & dm, Rcpp::List & g) : CoreMethod(METHOD_ACCESSION_NEAREST_ENTRY, dm, g) {
     };
 };

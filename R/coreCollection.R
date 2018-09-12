@@ -17,9 +17,12 @@ setOldClass("dist")
   }
   cat(paste0("- core items: ",nrow(object$core),"\n"))
   if(lengthPreselected>0) {
-    cat(paste0("Applied adjustedGroupMethod is '",object$adjustedGroupMethod,"'\n"))
+    cat(paste0("The adjustedGroupMethod is '",object$adjustedGroupMethod,"' and the "))
+  } else {
+    cat("The ")
   }
-  cat(paste0("Applied coreSelectMethod is '",object$coreSelectMethod,"'\n"))
+  cat(paste0("coreSelectMethod is '",object$coreSelectMethod,"'\n"))
+  cat(paste0("Applied algorithm is '",object$algorithm,"'\n"))
   cat("==========\n")
 }
 
@@ -27,7 +30,8 @@ setOldClass("dist")
   classname="coreCollection",
   private = list(
     initialised = FALSE,
-    constantAvailableCoreSelectMethods = c("A-NE", "E-NE"),
+    constantAvailableCoreSelectMethods = c("A-NE", "E-NE", "E-E"),
+    constantAvailableAlgorithms = c("randomDescent"),
     constantAvailableAdjustedGroupMethods = c("split", "recompute"),
     variableDistanceMatrix = NULL,
     variableN = NULL,
@@ -39,11 +43,12 @@ setOldClass("dist")
     variableAdjustedBasedGroups = NULL,
     variableCoreSelectMethod = NULL,
     variableCoreSelected = NULL,
+    variableAlgorithm = NULL,
     setDistanceMatrix=function(value) {
       if(!missing(value) && !is.null(value)) {
         distanceMatrix <- as.dist(value)
         if(attr(distanceMatrix,"Size")<=1) {
-          stop("distanceMatrix size should be >1")
+          stop("distanceMatrix size should be > 1")
         }
         private$variableDistanceMatrix <- distanceMatrix
       }
@@ -93,6 +98,18 @@ setOldClass("dist")
         }
       } else {
         private$variableCoreSelectMethod <- private$constantAvailableCoreSelectMethods[1];
+      }
+    },
+    setAlgorithm=function(value) {
+      if(!missing(value) && !is.null(value)) {
+        algorithm <- as.character(value)
+        if(length(algorithm)==1 && algorithm %in% private$constantAvailableAlgorithms) {
+          private$variableAlgorithm <- algorithm
+        } else {
+          stop(paste0("can't use '",paste(algorithm,collapse=", "),"' as algorithm, allowed: '",paste(private$constantAvailableAlgorithms, collapse="', '"),"'"))
+        }
+      } else {
+        private$variableAlgorithm <- private$constantAvailableAlgorithms[1];
       }
     },
     setAdjustedGroupMethod=function(value) {
@@ -190,10 +207,39 @@ setOldClass("dist")
       } else {
         private$variableCoreSelected <- NULL
       }
+    },
+    setInitialised=function(title) {
+      if(!private$initialised) {
+        #random result
+        rawRandomResult <- .computeRandomSelectionCoreCollection(self)
+        randomResult <- labels(distanceMatrix)[as.numeric(rawRandomResult)+1]
+        names(randomResult) <- labels(distanceMatrix)
+        private$setRandomSelected(randomResult)
+        #adjusted result
+        rawAdjustedResult <- .computeAdjustedSelectionCoreCollection(self, rawRandomResult)
+        adjustedResult <- labels(distanceMatrix)[as.numeric(rawAdjustedResult)+1]
+        names(adjustedResult) <- labels(distanceMatrix)
+        private$setAdjustedSelected(adjustedResult)
+        #create core
+        rawCoreResult <- .computeCoreSelectionCoreCollection(self)
+        coreResult <- labels(distanceMatrix)[as.numeric(rawCoreResult)+1]
+        private$setCore(coreResult)
+        #finished
+        private$initialised = TRUE
+        .showCoreCollection(self, title)
+      } else {
+        cat("CoreCollection not initialised!\n")
+      }
     }
   ),
   public = list(
-    initialize = function(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod) {
+    recompute = function() {
+      if(private$initialised) {
+        private$initialised = FALSE
+        private$setInitialised("Recompute Core Collection Object")
+      }
+    },
+    initialize = function(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm) {
       if(!private$initialised) {
         if(!missing(distanceMatrix) && !is.null(distanceMatrix)) {
           private$setDistanceMatrix(distanceMatrix)
@@ -220,24 +266,14 @@ setOldClass("dist")
         } else {
           private$setAdjustedGroupMethod()
         }
+        if(!missing(algorithm)) {
+          private$setAlgorithm(algorithm)
+        } else {
+          private$setAlgorithm()
+        }
         N <- attr(private$variableDistanceMatrix,"Size")
-        #random result
-        rawRandomResult <- .computeRandomSelectionCoreCollection(self)
-        randomResult <- labels(distanceMatrix)[as.numeric(rawRandomResult)+1]
-        names(randomResult) <- labels(distanceMatrix)
-        private$setRandomSelected(randomResult)
-        #adjusted result
-        rawAdjustedResult <- .computeAdjustedSelectionCoreCollection(self, rawRandomResult)
-        adjustedResult <- labels(distanceMatrix)[as.numeric(rawAdjustedResult)+1]
-        names(adjustedResult) <- labels(distanceMatrix)
-        private$setAdjustedSelected(adjustedResult)
-        #create core
-        rawCoreResult <- .computeCoreSelectionCoreCollection(self)
-        coreResult <- labels(distanceMatrix)[as.numeric(rawCoreResult)+1]
-        private$setCore(coreResult)
-        #finished
-        private$initialised = TRUE
-        .showCoreCollection(self, "Created new Core Collection Object")
+        #initialize
+        private$setInitialised("Created new Core Collection Object")
       } else {
         cat("CoreCollection already initialised!\n")
       }
@@ -247,7 +283,7 @@ setOldClass("dist")
       .showCoreCollection(self,"CoreCollection object")
       invisible(self)
     },
-    distance = function(value) {
+    measure = function(value) {
       if(missing(value)) {
         method <- private$variableCoreSelectMethod
       } else {
@@ -256,7 +292,16 @@ setOldClass("dist")
           stop(paste0("can't use '",paste(method,collapse=", "),"' as distance method, allowed: '",paste(private$constantAvailableCoreSelectMethods, collapse="', '"),"'"))
         }
       }
-      return(.computeDistance(self, method))
+      return(.computeMeasure(self, method))
+    },
+    measures = function(...) {
+      m <- c()
+      for(method in private$constantAvailableCoreSelectMethods) {
+        m <- c(m, .computeMeasure(self, method))
+      }
+      result <- data.frame(measure=m)
+      rownames(result) <- private$constantAvailableCoreSelectMethods
+      return(result)
     }
   ),
   active = list(
@@ -293,6 +338,13 @@ setOldClass("dist")
         return(private$variableAdjustedGroupMethod)
       } else {
         cat("Changing adjustedGroupMethod not allowed\n")
+      }
+    },
+    algorithm = function(value) {
+      if(missing(value)) {
+        return(private$variableAlgorithm)
+      } else {
+        cat("Changing algorithm not allowed\n")
       }
     },
     randomSelected = function(value) {
@@ -343,8 +395,8 @@ setOldClass("dist")
   )
 )
 
-CoreCollection <- function(distanceMatrix, n, preselected=c(), coreSelectMethod="A-NE", adjustedGroupMethod="split") {
-  return(.CoreCollectionClass$new(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod))
+CoreCollection <- function(distanceMatrix, n, preselected=c(), coreSelectMethod="A-NE", adjustedGroupMethod="split", algorithm="randomDescent") {
+  return(.CoreCollectionClass$new(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm))
 }
 
 setMethod(
@@ -354,4 +406,7 @@ setMethod(
     .showCoreCollection(object, "Summary Core Collection Object")
   }
 )
+
+
+
 

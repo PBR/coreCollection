@@ -44,28 +44,29 @@ BEGIN_RCPP
 END_RCPP
 }
 // computeCore
-Rcpp::IntegerVector computeCore(std::string method, Rcpp::NumericMatrix& dist, Rcpp::List& groups);
-RcppExport SEXP _coreCollection_computeCore(SEXP methodSEXP, SEXP distSEXP, SEXP groupsSEXP) {
+Rcpp::IntegerVector computeCore(std::string algorithm, std::string method, Rcpp::NumericMatrix& dist, Rcpp::List& groups);
+RcppExport SEXP _coreCollection_computeCore(SEXP algorithmSEXP, SEXP methodSEXP, SEXP distSEXP, SEXP groupsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type algorithm(algorithmSEXP);
     Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type dist(distSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type groups(groupsSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeCore(method, dist, groups));
+    rcpp_result_gen = Rcpp::wrap(computeCore(algorithm, method, dist, groups));
     return rcpp_result_gen;
 END_RCPP
 }
-// computeDistance
-double computeDistance(std::string method, Rcpp::NumericMatrix& dist, Rcpp::IntegerVector& entries);
-RcppExport SEXP _coreCollection_computeDistance(SEXP methodSEXP, SEXP distSEXP, SEXP entriesSEXP) {
+// computeMeasure
+double computeMeasure(std::string method, Rcpp::NumericMatrix& dist, Rcpp::IntegerVector& c);
+RcppExport SEXP _coreCollection_computeMeasure(SEXP methodSEXP, SEXP distSEXP, SEXP cSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type dist(distSEXP);
-    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type entries(entriesSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeDistance(method, dist, entries));
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type c(cSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeMeasure(method, dist, c));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -74,8 +75,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_coreCollection_computeRandomSelection", (DL_FUNC) &_coreCollection_computeRandomSelection, 3},
     {"_coreCollection_computeAdjustedSelectionUsingRecomputeMethod", (DL_FUNC) &_coreCollection_computeAdjustedSelectionUsingRecomputeMethod, 2},
     {"_coreCollection_computeAdjustedSelectionUsingSplitMethod", (DL_FUNC) &_coreCollection_computeAdjustedSelectionUsingSplitMethod, 3},
-    {"_coreCollection_computeCore", (DL_FUNC) &_coreCollection_computeCore, 3},
-    {"_coreCollection_computeDistance", (DL_FUNC) &_coreCollection_computeDistance, 3},
+    {"_coreCollection_computeCore", (DL_FUNC) &_coreCollection_computeCore, 4},
+    {"_coreCollection_computeMeasure", (DL_FUNC) &_coreCollection_computeMeasure, 3},
     {NULL, NULL, 0}
 };
 

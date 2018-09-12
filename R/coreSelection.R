@@ -33,19 +33,20 @@
     }
   }
   names(rawGroups) <- match(names(rawGroups), labels(object$distanceMatrix))-1
-  result <- computeCore(object$coreSelectMethod,dm,rawGroups)
+  result <- computeCore(object$algorithm,object$coreSelectMethod,dm,rawGroups)
   if(is.null(result)) {
     stop(paste0("no result, possibly unknown coreSelectMethod ",object$coreSelectMethod))
   }
   return(as.numeric(result))
 }
 
-.computeDistance <- function(object, method) {
+.computeMeasure <- function(object, method) {
   if(!missing(method) && !is.null(method)) {
     dm <- as.matrix(object$distanceMatrix)
-    entries <- match(rownames(object$core), labels(object$distanceMatrix))-1
-    return(computeDistance(method, dm, entries))
+    c <- match(rownames(object$core), labels(object$distanceMatrix))-1
+    return(computeMeasure(method, dm, c))
   } else {
-    return(paste0("couldn't compute distance for method",method))
+    return(paste0("couldn't compute measure for method",method))
   }
 }
+

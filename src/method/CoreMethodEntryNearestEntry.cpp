@@ -3,15 +3,19 @@ using namespace Rcpp;
 
 const std::string METHOD_ENTRY_NEAREST_ENTRY = "E-NE";
 
+double CoreMethodEntryNearestEntry::measure (Rcpp::IntegerVector & c) {
+  return CoreMethodEntryNearestEntry::measure(distanceMatrix, c);
+}
+
 //TODO: improve speed
-double CoreMethodEntryNearestEntry::distance (Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & entries) {
+double CoreMethodEntryNearestEntry::measure (Rcpp::NumericMatrix & dm, Rcpp::IntegerVector & c) {
   double d, nd, sumOfDistances = 0;
-  int nl, N = dist.nrow(), l=entries.length();
+  int nl, N = dm.nrow(), l=c.length();
   for(int i=0; i<l; i++) {
     d = 0;
-    nl = entries[i]*N;
+    nl = c[i]*N;
     for(int j=0;j<l; j++) {
-      nd = dist[nl+entries[j]];
+      nd = dm[nl+c[j]];
       if((j==0) || (d<nd)) {
         d = nd;
       }
@@ -21,4 +25,7 @@ double CoreMethodEntryNearestEntry::distance (Rcpp::NumericMatrix & dist, Rcpp::
   return(sumOfDistances/l);
 }
 
+bool CoreMethodEntryNearestEntry::improvement (double m1, double m2) {
+  return (m1<m2);
+}
 

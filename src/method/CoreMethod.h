@@ -3,6 +3,7 @@
 
 #include <string>
 #include <Rcpp.h>
+#include <time.h>
 
 class CoreMethod {
   protected:
@@ -17,13 +18,29 @@ class CoreMethod {
       return numeric(Rcpp::_["x"] = groups.names());
     }
   public:
-    static double distance (Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & entries);
+    int accessionNumber;
+    int coreNumber;
+    int fixedCoreNumber;
+    int randomCoreNumber;
     std::string getMethod();
     virtual Rcpp::IntegerVector getInitial() {
       std::cout << "Call to default getInitial, should not happen!" << std::endl;
       return NULL;
     };
+    static double measure (Rcpp::NumericMatrix & dm, Rcpp::IntegerVector & c) {
+      std::cout << "Call to default measure, should not happen!" << std::endl;
+      return 0;
+    };
+    virtual double measure (Rcpp::IntegerVector & c) {
+      std::cout << "Call to default measure, should not happen!" << std::endl;
+      return 0;
+    };
+    virtual bool improvement (double m1, double m2) {
+      std::cout << "Call to default improvement, should not happen!" << std::endl;
+      return FALSE;
+    };
     Rcpp::IntegerVector getRandomNeighbour(Rcpp::IntegerVector coreInstance);
+    Rcpp::IntegerVector getRandom();
     CoreMethod(std::string m, Rcpp::NumericMatrix & dm, Rcpp::List & g);
 };
 
