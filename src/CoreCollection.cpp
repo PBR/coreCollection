@@ -75,7 +75,10 @@ Rcpp::IntegerVector computeCore(std::string algorithm, std::string method, Rcpp:
   } else {
     return NULL;
   }
-  return a->getCore(*m);
+  Rcpp::IntegerVector result(clone(a->getCore(*m)));
+  delete m;
+  delete a;
+  return result;
 }
 
 // [[Rcpp::export]]

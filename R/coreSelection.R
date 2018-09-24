@@ -23,6 +23,8 @@
 }
 
 .computeCoreSelectionCoreCollection <- function(object) {
+  #cat(paste0(mem_used(),"\n"))
+  #cat("Compute core\n")
   dm <- as.matrix(object$distanceMatrix)
   rawGroups <- object$adjustedBasedGroups
   for(groupName in names(rawGroups)) {
@@ -37,6 +39,8 @@
   if(is.null(result)) {
     stop(paste0("no result, possibly unknown coreSelectMethod ",object$coreSelectMethod))
   }
+  #cat("Computed core\n")
+  #cat(paste0(mem_used(),"\n"))
   return(as.numeric(result))
 }
 
