@@ -391,7 +391,30 @@ setOldClass("dist")
       } else {
         cat("Changing adjusted selected groups not allowed\n")
       }
+    },
+    pop = function(value) {
+      if(missing(value)) {
+        result <- c()
+        labels <- labels(private$variableDistanceMatrix)
+        coreLabels <- rownames(private$variableCoreSelected)
+        preselectedLabels <- private$variablePreselected
+        for(item in labels) {
+          if(item %in% coreLabels) {
+            if(!is.null(preselectedLabels) && (item %in% preselectedLabels)) {
+              result <- c(result, "core - preselected")
+            } else {
+              result <- c(result, paste0("core - ",private$variableCoreSelectMethod))
+            }
+          } else {
+            result <- c(result, "other")
+          }
+        }
+        return(result)
+      } else {
+        cat("Changing pop not allowed\n")
+      }
     }
+
   )
 )
 
