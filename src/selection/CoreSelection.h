@@ -10,7 +10,7 @@ class CoreSelection {
   public:
     static Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix & dist, int requiredN, Rcpp::IntegerVector & preselected);
     static Rcpp::IntegerVector createSelectionResult(Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & selected);
-    static void initialise();
+    static void initialise(int seed);
 };
 
 #endif

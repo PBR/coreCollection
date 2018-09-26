@@ -3,7 +3,8 @@
   dm <- as.matrix(object$distanceMatrix)
   preselected <- match(object$preselected, labels(object$distanceMatrix))-1
   n <- object$n
-  return(computeRandomSelection(dm, n, preselected))
+  seed <- object$seed;
+  return(computeRandomSelection(dm, n, preselected, seed))
 }
 
 .computeAdjustedSelectionCoreCollection <- function(object, groups) {

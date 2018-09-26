@@ -265,6 +265,6 @@ Rcpp::IntegerVector CoreSelection::computeRandomSelection(Rcpp::NumericMatrix & 
   return createSelectionResult(dist, selected);
 }
 
-void CoreSelection::initialise() {
-  srand ((unsigned) time(NULL)); // seed the generator
+void CoreSelection::initialise(int seed) {
+  srand (seed); // seed the generator
 }

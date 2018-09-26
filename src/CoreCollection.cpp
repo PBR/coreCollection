@@ -8,8 +8,8 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix & dist, int requiredN, Rcpp::IntegerVector & preselected) {
-  CoreSelection::initialise();
+Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix & dist, int requiredN, Rcpp::IntegerVector & preselected, int seed) {
+  CoreSelection::initialise(seed);
   return CoreSelection::computeRandomSelection(dist, requiredN, preselected);
 }
 

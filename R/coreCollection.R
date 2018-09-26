@@ -16,6 +16,7 @@ setOldClass("dist")
     cat(paste0("- adjusted selected items: ",nrow(object$adjustedSelected),"\n"))
   }
   cat(paste0("- core items: ",nrow(object$core),"\n"))
+  cat(paste0("- seed: ",object$seed,"\n"))
   if(lengthPreselected>0) {
     cat(paste0("The adjustedGroupMethod is '",object$adjustedGroupMethod,"' and the "))
   } else {
@@ -44,6 +45,8 @@ setOldClass("dist")
     variableCoreSelectMethod = NULL,
     variableCoreSelected = NULL,
     variableAlgorithm = NULL,
+    variableSeed = NULL,
+    variableRandomSeed = NULL,
     setDistanceMatrix=function(value) {
       if(!missing(value) && !is.null(value)) {
         distanceMatrix <- as.dist(value)
@@ -110,6 +113,22 @@ setOldClass("dist")
         }
       } else {
         private$variableAlgorithm <- private$constantAvailableAlgorithms[1];
+      }
+    },
+    setSeed=function(value) {
+      if(!missing(value) && !is.null(value)) {
+        seed <- as.integer(value)
+        if(!is.na(seed)) {
+          private$variableSeed <- seed
+          set.seed(private$variableSeed)
+        } else {
+          stop(paste0("can't use '",paste(value,collapse=", "),"' as seed, use integer"))
+        }
+      } else if(is.null(value)) {
+        private$variableRandomSeed=round((as.numeric(Sys.time())*1000)%%.Machine$integer.max)
+        set.seed(private$variableRandomSeed)
+      } else {
+        private$variableSeed <- NULL
       }
     },
     setAdjustedGroupMethod=function(value) {
@@ -236,10 +255,11 @@ setOldClass("dist")
     recompute = function() {
       if(private$initialised) {
         private$initialised = FALSE
+        private$setSeed(private$variableSeed)
         private$setInitialised("Recompute Core Collection Object")
       }
     },
-    initialize = function(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm) {
+    initialize = function(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed) {
       if(!private$initialised) {
         if(!missing(distanceMatrix) && !is.null(distanceMatrix)) {
           private$setDistanceMatrix(distanceMatrix)
@@ -270,6 +290,11 @@ setOldClass("dist")
           private$setAlgorithm(algorithm)
         } else {
           private$setAlgorithm()
+        }
+        if(!missing(seed)) {
+          private$setSeed(seed)
+        } else {
+          private$setSeed()
         }
         N <- attr(private$variableDistanceMatrix,"Size")
         #initialize
@@ -413,13 +438,24 @@ setOldClass("dist")
       } else {
         cat("Changing pop not allowed\n")
       }
+    },
+    seed = function(value) {
+      if(missing(value)) {
+        if(!is.null(private$variableSeed)) {
+          return(private$variableSeed)
+        } else {
+          return(private$variableRandomSeed)
+        }
+      } else {
+        cat("Changing seed not allowed\n")
+      }
     }
 
   )
 )
 
-CoreCollection <- function(distanceMatrix, n, preselected=c(), coreSelectMethod="A-NE", adjustedGroupMethod="split", algorithm="randomDescent") {
-  return(.CoreCollectionClass$new(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm))
+CoreCollection <- function(distanceMatrix, n, preselected=c(), coreSelectMethod="A-NE", adjustedGroupMethod="split", algorithm="randomDescent", seed=NULL) {
+  return(.CoreCollectionClass$new(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed))
 }
 
 setMethod(

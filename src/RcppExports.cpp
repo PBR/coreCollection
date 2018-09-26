@@ -6,15 +6,16 @@
 using namespace Rcpp;
 
 // computeRandomSelection
-Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix& dist, int requiredN, Rcpp::IntegerVector& preselected);
-RcppExport SEXP _coreCollection_computeRandomSelection(SEXP distSEXP, SEXP requiredNSEXP, SEXP preselectedSEXP) {
+Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix& dist, int requiredN, Rcpp::IntegerVector& preselected, int seed);
+RcppExport SEXP _coreCollection_computeRandomSelection(SEXP distSEXP, SEXP requiredNSEXP, SEXP preselectedSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix& >::type dist(distSEXP);
     Rcpp::traits::input_parameter< int >::type requiredN(requiredNSEXP);
     Rcpp::traits::input_parameter< Rcpp::IntegerVector& >::type preselected(preselectedSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeRandomSelection(dist, requiredN, preselected));
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeRandomSelection(dist, requiredN, preselected, seed));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -72,7 +73,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_coreCollection_computeRandomSelection", (DL_FUNC) &_coreCollection_computeRandomSelection, 3},
+    {"_coreCollection_computeRandomSelection", (DL_FUNC) &_coreCollection_computeRandomSelection, 4},
     {"_coreCollection_computeAdjustedSelectionUsingRecomputeMethod", (DL_FUNC) &_coreCollection_computeAdjustedSelectionUsingRecomputeMethod, 2},
     {"_coreCollection_computeAdjustedSelectionUsingSplitMethod", (DL_FUNC) &_coreCollection_computeAdjustedSelectionUsingSplitMethod, 3},
     {"_coreCollection_computeCore", (DL_FUNC) &_coreCollection_computeCore, 4},
