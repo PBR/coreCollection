@@ -84,7 +84,7 @@ int coreNumber(Rcpp::NumericMatrix & dist, Rcpp::IntegerVector & selected, Rcpp:
     double newM, m = 0;
     //loop over all notContained
     while(l>0) {
-      nl = N*(l-1);
+      nl = N*(d[l-1]-1);
       i = sl;
       //find nearest selection (must replace this one)
       while(i>0) {
