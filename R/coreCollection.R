@@ -259,6 +259,15 @@ setOldClass("dist")
         private$setInitialised("Recompute Core Collection Object")
       }
     },
+    alternativeCore = function(n) {
+      if(private$initialised) {
+        if(!missing(n) && !is.null(n)) {
+          return(.computeAlternativeCore(self, n))
+        } else {
+          stop("n is required")
+        }
+      }
+    },
     initialize = function(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed) {
       if(!private$initialised) {
         if(!missing(distanceMatrix) && !is.null(distanceMatrix)) {

@@ -55,3 +55,24 @@
   }
 }
 
+.computeAlternativeCore <- function(object, n) {
+  if(!missing(n) && !is.null(n)) {
+    result <- rep(NA, nrow(object$core))
+    dm <- as.matrix(object$distanceMatrix)
+    groups <- object$adjustedBasedGroups
+    list <- labels(groups)
+    for(i in 1:length(list)) {
+      groupEntries <- unlist(groups[list[i]])
+      if(length(groupEntries)>n) {
+        #remove main entry
+        groupEntries <- groupEntries[groupEntries!=list[i]]
+        #compute distances
+        distances <- unlist(lapply(groupEntries, function(x) {return(dm[list[i],x])}))
+        #select nth from ordered entries
+        result[i] <- groupEntries[order(distances)][n]
+      }
+    }
+    return(result)
+  }
+}
+
