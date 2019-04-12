@@ -35,10 +35,12 @@ Rcpp::IntegerVector CoreMethod::getRandomNeighbour(Rcpp::IntegerVector c) {
   if(n==0) {
     return c;
   } else {
-    i = rand() % n;
+    //i = rand() % n;
+    i = ((int) Rcpp::runif(1,0,n)[0]) % n;
     col = groups[selectedRandomPositions[i]];
     m = col.length();
-    j = rand() % m;
+    //j = rand() % m;
+    j = ((int) Rcpp::runif(1,0,m)[0]) % m;
     c[selectedRandomPositions[i]] = col[j];
   }
   return c;
@@ -46,11 +48,13 @@ Rcpp::IntegerVector CoreMethod::getRandomNeighbour(Rcpp::IntegerVector c) {
 
 Rcpp::IntegerVector CoreMethod::getRandom() {
   Rcpp::IntegerVector c(groups.length());
-  int i, j, n=selectedRandomPositions.length(), m=selectedFixedPositions.length();
+  int i, j, l, n=selectedRandomPositions.length(), m=selectedFixedPositions.length();
   Rcpp::NumericVector col;
   for(i=0;i<n;i++) {
     col = groups[selectedRandomPositions[i]];
-    j = rand() % col.length();
+    l = col.length();
+    //j = rand() % col.length();
+    j = ((int) Rcpp::runif(1,0,l)[0]) % l;
     c[selectedRandomPositions[i]] = col[j];
   }
   for(i=0;i<m;i++) {

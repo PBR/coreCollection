@@ -27,6 +27,14 @@ setOldClass("dist")
   cat("==========\n")
 }
 
+#' The CoreCollection Class
+#'
+#' @docType class
+#' @useDynLib coreCollection
+#' @importFrom R6 R6Class
+#' @importFrom Rcpp evalCpp
+#' @keywords internal
+#' @format A \code{\link{R6Class}} generator object
 .CoreCollectionClass <- R6Class(
   classname="coreCollection",
   private = list(
@@ -52,6 +60,12 @@ setOldClass("dist")
         distanceMatrix <- as.dist(value)
         if(attr(distanceMatrix,"Size")<=1) {
           stop("distanceMatrix size should be > 1")
+        }
+        # enforce labels if necessary
+        if(is.null(labels(distanceMatrix))) {
+          distanceMatrix <- as.matrix(distanceMatrix)
+          rownames(distanceMatrix) <- seq(1,nrow(distanceMatrix))
+          distanceMatrix <- as.dist(distanceMatrix)
         }
         private$variableDistanceMatrix <- distanceMatrix
       }
@@ -231,17 +245,17 @@ setOldClass("dist")
       if(!private$initialised) {
         #random result
         rawRandomResult <- .computeRandomSelectionCoreCollection(self)
-        randomResult <- labels(distanceMatrix)[as.numeric(rawRandomResult)+1]
-        names(randomResult) <- labels(distanceMatrix)
+        randomResult <- labels(private$variableDistanceMatrix)[as.numeric(rawRandomResult)+1]
+        names(randomResult) <- labels(private$variableDistanceMatrix)
         private$setRandomSelected(randomResult)
         #adjusted result
         rawAdjustedResult <- .computeAdjustedSelectionCoreCollection(self, rawRandomResult)
-        adjustedResult <- labels(distanceMatrix)[as.numeric(rawAdjustedResult)+1]
-        names(adjustedResult) <- labels(distanceMatrix)
+        adjustedResult <- labels(private$variableDistanceMatrix)[as.numeric(rawAdjustedResult)+1]
+        names(adjustedResult) <- labels(private$variableDistanceMatrix)
         private$setAdjustedSelected(adjustedResult)
         #create core
         rawCoreResult <- .computeCoreSelectionCoreCollection(self)
-        coreResult <- labels(distanceMatrix)[as.numeric(rawCoreResult)+1]
+        coreResult <- labels(private$variableDistanceMatrix)[as.numeric(rawCoreResult)+1]
         private$setCore(coreResult)
         #finished
         private$initialised = TRUE
@@ -262,6 +276,7 @@ setOldClass("dist")
     alternativeCore = function(n) {
       if(private$initialised) {
         if(!missing(n) && !is.null(n)) {
+
           return(.computeAlternativeCore(self, n))
         } else {
           stop("n is required")
@@ -314,6 +329,10 @@ setOldClass("dist")
       invisible(self)
     },
     print = function(...) {
+      .showCoreCollection(self,"CoreCollection object")
+      invisible(self)
+    },
+    summary = function(...) {
       .showCoreCollection(self,"CoreCollection object")
       invisible(self)
     },
@@ -463,18 +482,85 @@ setOldClass("dist")
   )
 )
 
+#' The CoreCollection class
+#'
+#' R6 class for creating a core collection.
+#' @param distanceMatrix a distance matrix; can be either a \link[=matrix]{matrix} or a \link[stats:dist]{dist}
+#' @param n the number of items in the core
+#' @param preselected an optional list of preselected accessions to be included in the core collection;
+#' the provided accessions should occur in the labels or rownames of the provided distanceMatrix
+#' @param coreSelectMethod The method for \link[coreCollection:computeCore]{computing} core accessions within the groups:
+#' \code{A-NE} (accession nearest entry), \code{E-NE} (entry nearest entry) or \code{E-E} (entry entry)
+#' @param adjustedGroupMethod The method to handle adjusting groups when multiple preselected accessions occur within a single group:
+#' \code{split} to just split the initial groups with multiple accessions or \code{recompute} to recompute the division of
+#' accessions over the groups.
+#' @param algorithm algorithm applied to \link[coreCollection:computeCore]{compute} a solution: currently, only \code{randomDescent} is available
+#' @param seed The seed used when generating the core collection. If no seed is provided, a random
+#' seed is chosen and each time the \code{recompute()} method is called on the object, a new seed will be used.
+#' @field adjustedBasedGroups A list describing the initial random division of all accessions into groups, adjusted for the
+#' set of \code{preselected} accessions using the defined \code{adjustedGroupMethod}.
+#' @field adjustedGroupMethod The method to handle adjusting groups when multiple preselected accessions occur within a single group.
+#' @slot adjustedSelected todo
+#' @field algorithm The applied algorithm to compute the solution.
+#' @field core A \link[=data.frame]{data.frame} representing the core collection with the accession names as labels and in the first and only column a boolean value indicating whether or not the accession was preselected.
+#' @field coreSelectMethod The applied method to select the core accessions based on the computed \code{adjustedBasedGroups}.
+#' @field distanceMatrix The distance matrix; this will allways be a \link[stats:dist]{dist} object.
+#' @field measure The measure used in the defined \code{method} to compute the core collection.
+#' @field measures A \link[=data.frame]{data.frame} with the available \code{methods} as labels and in the first and only column the measures for these methods.
+#' @field n The required core size
+#' @field pop todo
+#' @field preselected The list of preselected accessions.
+#' @field randomBasedGroups todo
+#' @field randomSelected todo
+#' @field seed The last applied seed for the randomizer. This will only change when the \code{recompute()} method
+#' is called and no initial \code{seed} is defined.
+#' @section Methods:
+#' \describe{
+#'   \item{\code{alternativeCore(n)}}{The \code{n}th alternative core with \code{n} a positive integer. Provides for each non-preselected accession in the core, if available, the \code{n}th nearest accession from within the same group as an alternative.}
+#'   \item{\code{clone(deep = FALSE)}}{The default \link{R6Class} clone method.}
+#'   \item{\code{initialize()}}{Initialisation of the object, is called automatically on creation or recomputing.}
+#'   \item{\code{recompute()}}{Recompute the core collection: If on initialisation of the object a seed was provided, this same seed will be applied and therefore the same core collection will be created. Otherwise, a new seed is generated, resulting in a new core.}
+#'   \item{\code{print()}}{Create a summary of the core collection object, same as \code{summary()}.}
+#'   \item{\code{summary()}}{Create a summary of the core collection object, same as \code{print()}.}
+#' }
+#' @name CoreCollection
+#' @aliases CoreCollection
+#' @family core collection
+#' @export
+#' @examples
+#' # Get a vcf-file
+#' library(vcfR)
+#' vcfFile <- tempfile()
+#' vcfFileSource <- paste0(
+#'   "ftp://ftp-trace.ncbi.nih.gov/",
+#'   "1000genomes/ftp/pilot_data/release/2010_07",
+#'   "/exon/snps/CEU.exon.2010_03.genotypes.vcf.gz")
+#' download.file(vcfFileSource, vcfFile)
+#' vcf <- read.vcfR(vcfFile)
+#' file.remove(vcfFile)
+#'
+#' # Create a distance object
+#' gl <- vcfR2genlight(vcf)
+#' dist <- dist(gl)
+#'
+#' # Create a Core Collection
+#' n = 10
+#' cc <- CoreCollection(dist, n)
+#' cc$core
+#'
+#' # Create a Core Collection with preselected accessions
+#' preselected = sample(labels(dist), 5)
+#' ccp <- CoreCollection(dist, n, preselected)
+#' preselected
+#' ccp$core
+#'
+#' # # Visualize the Core Collection
+#' # library(ggfortify)
+#' # data = setNames(data.frame(matrix(ncol=2,nrow=attr(dist,"Size"))), c("core","preselected"))
+#' # data$core <- labels(dist) %in% rownames(ccp$core)
+#' # data$preselected <- labels(dist) %in% preselected
+#' # autoplot(prcomp(dist), data=data, colour="core", shape="preselected")
+
 CoreCollection <- function(distanceMatrix, n, preselected=c(), coreSelectMethod="A-NE", adjustedGroupMethod="split", algorithm="randomDescent", seed=NULL) {
   return(.CoreCollectionClass$new(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed))
 }
-
-setMethod(
-  f="summary",
-  signature="coreCollection",
-  definition=function(object) {
-    .showCoreCollection(object, "Summary Core Collection Object")
-  }
-)
-
-
-
-

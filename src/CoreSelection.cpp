@@ -50,7 +50,8 @@ Rcpp::IntegerVector randomSelection(Rcpp::NumericMatrix & dist, double r) {
   //start
   while(an>0) {
     //choose random
-    k = rand() % an;
+    //k = rand() % an;
+    k = ((int) Rcpp::runif(1,0,an)[0]) % an;
     nk = N*k;
     //register (positive) id
     v[s] = a[k];
@@ -138,8 +139,6 @@ Rcpp::IntegerVector CoreSelection::createSelectionResult(Rcpp::NumericMatrix & d
 Rcpp::IntegerVector CoreSelection::computeRandomSelection(Rcpp::NumericMatrix & dist, int requiredN, Rcpp::IntegerVector & preselected) {
   //full number
   int N = dist.nrow();
-  //selected values
-  Rcpp::IntegerVector v(N);
   //get data
   int preselectedLength = preselected.length();
   int maxN = dist.nrow();
@@ -266,5 +265,5 @@ Rcpp::IntegerVector CoreSelection::computeRandomSelection(Rcpp::NumericMatrix & 
 }
 
 void CoreSelection::initialise(int seed) {
-  srand (seed); // seed the generator
+  //srand (seed); // seed the generator
 }
