@@ -39,6 +39,10 @@ class CoreMethod {
       Rcpp::Rcout << "Call to default improvement, should not happen!" << std::endl;
       return FALSE;
     };
+    virtual Rcpp::IntegerVector adjustRandomNeighbour (Rcpp::IntegerVector coreInstance, int i) {
+      Rcpp::Rcout << "Call to default getRandomNeighbour, should not happen!" << std::endl;
+      return FALSE;
+    };
     Rcpp::IntegerVector getRandomNeighbour(Rcpp::IntegerVector coreInstance);
     Rcpp::IntegerVector getRandom();
     CoreMethod(std::string m, Rcpp::NumericMatrix & dm, Rcpp::List & g);

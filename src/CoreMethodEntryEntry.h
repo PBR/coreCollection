@@ -17,6 +17,7 @@ class CoreMethodEntryEntry: public CoreMethod {
     static double measure (Rcpp::NumericMatrix & dm, Rcpp::IntegerVector & c);
     double measure (Rcpp::IntegerVector & c);
     bool improvement (double m1, double m2);
+    Rcpp::IntegerVector adjustRandomNeighbour(Rcpp::IntegerVector coreInstance, int i);
     CoreMethodEntryEntry(Rcpp::NumericMatrix & dm, Rcpp::List & g) : CoreMethod(METHOD_ENTRY_ENTRY, dm, g) {
     };
 };

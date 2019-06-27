@@ -80,7 +80,7 @@ Rcpp::IntegerVector computeAdjustedSelectionUsingSplitMethod(Rcpp::NumericMatrix
     double newDistances[N], newDistance;
     for(i=0; i<N; i++) {
       newGroups[i] = groups[i];
-      newDistances[i] = 0;
+      newDistances[i] = 0.0;
     }
     //split existing groups
     int preselectedLength = preselected.length();
@@ -90,10 +90,10 @@ Rcpp::IntegerVector computeAdjustedSelectionUsingSplitMethod(Rcpp::NumericMatrix
       for(i=0; i<N; i++) {
         if(i==preselected[j]) {
           newGroups[i]=preselected[j];
-          newDistances[i] = 0;
+          newDistances[i] = 0.0;
         } else if(groups[i]==selectedGroup) {
           newDistance = dist[nl+preselected[j]];
-          if(newGroups[i]==selectedGroup || newDistance<newDistances[i]) {
+          if((newGroups[i]==selectedGroup) & (newDistance<newDistances[i])) {
             newGroups[i]=preselected[j];
             newDistances[i]=newDistance;
           }

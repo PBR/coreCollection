@@ -29,11 +29,12 @@ CoreMethod::CoreMethod(std::string m, Rcpp::NumericMatrix & dm, Rcpp::List & g) 
   randomCoreNumber = srp.length();
 }
 
-Rcpp::IntegerVector CoreMethod::getRandomNeighbour(Rcpp::IntegerVector c) {
+Rcpp::IntegerVector CoreMethod::getRandomNeighbour(Rcpp::IntegerVector c1) {
   int i, j, m, n = selectedRandomPositions.length();
+  Rcpp::IntegerVector c2 = clone(c1);
   Rcpp::NumericVector col;
   if(n==0) {
-    return c;
+    return c2;
   } else {
     //i = rand() % n;
     i = ((int) Rcpp::runif(1,0,n)[0]) % n;
@@ -41,9 +42,10 @@ Rcpp::IntegerVector CoreMethod::getRandomNeighbour(Rcpp::IntegerVector c) {
     m = col.length();
     //j = rand() % m;
     j = ((int) Rcpp::runif(1,0,m)[0]) % m;
-    c[selectedRandomPositions[i]] = col[j];
+    c2[selectedRandomPositions[i]] = col[j];
+    c2 = adjustRandomNeighbour(c2, i);
   }
-  return c;
+  return c2;
 }
 
 Rcpp::IntegerVector CoreMethod::getRandom() {

@@ -89,7 +89,7 @@ setOldClass("dist")
         preselected <- unique(as.vector(value, mode="character"))
         l <- length(preselected)
         if(l>=private$variableN) {
-          stop(paste0("preselected should not contain more items (",l,") than the requested core size (",private$variableN,")"))
+          stop(paste0("preselected should not contain equal or more items (",l,") than the requested core size (",private$variableN,")"))
         } else if(l>0) {
           labels <- labels(private$variableDistanceMatrix)
           diff <- setdiff(preselected,labels)
@@ -336,11 +336,11 @@ setOldClass("dist")
       .showCoreCollection(self,"CoreCollection object")
       invisible(self)
     },
-    measure = function(value) {
-      if(missing(value)) {
+    measure = function(coreSelectMethod) {
+      if(missing(coreSelectMethod)) {
         method <- private$variableCoreSelectMethod
       } else {
-        method <- as.character(value)
+        method <- as.character(coreSelectMethod)
         if(length(method)!=1 | !(method %in% private$constantAvailableCoreSelectMethods)) {
           stop(paste0("can't use '",paste(method,collapse=", "),"' as distance method, allowed: '",paste(private$constantAvailableCoreSelectMethods, collapse="', '"),"'"))
         }
@@ -462,6 +462,8 @@ setOldClass("dist")
             result <- c(result, "other")
           }
         }
+        result <- data.frame(result)
+        rownames(result) <- labels(private$variableDistanceMatrix)
         return(result)
       } else {
         cat("Changing pop not allowed\n")
@@ -484,7 +486,17 @@ setOldClass("dist")
 
 #' The CoreCollection class
 #'
-#' R6 class for creating a core collection.
+#' R6 class for creating a core collection based on the provided \code{distanceMatrix},
+#' required size of the core \code{n} and optionally a set of \code{preselected} accessions to be included
+#' into the core.
+#'
+#' Based on a provided \code{distanceMatrix} and required number \code{n} of accessions
+#' within the core, a random set of accessions is created, implicitly dividing the full
+#' population into initial groups based on the nearest randomly chosen random accession. If a
+#' set of \code{preselected} accessions is provided, this initial division is adjusted using the
+#' \code{adjustedGroupMethod}. Then, using the \code{coreSelectMethod} in the \code{algorithm}, the
+#' core accessions within these groups are calculated, resulting in the final core collection.
+#'
 #' @param distanceMatrix a distance matrix; can be either a \link[=matrix]{matrix} or a \link[stats:dist]{dist}
 #' @param n the number of items in the core
 #' @param preselected an optional list of preselected accessions to be included in the core collection;
@@ -498,27 +510,40 @@ setOldClass("dist")
 #' @param seed The seed used when generating the core collection. If no seed is provided, a random
 #' seed is chosen and each time the \code{recompute()} method is called on the object, a new seed will be used.
 #' @field adjustedBasedGroups A list describing the initial random division of all accessions into groups, adjusted for the
-#' set of \code{preselected} accessions using the defined \code{adjustedGroupMethod}.
+#' set of \code{preselected} accessions by using the defined \code{adjustedGroupMethod}.
 #' @field adjustedGroupMethod The method to handle adjusting groups when multiple preselected accessions occur within a single group.
-#' @slot adjustedSelected todo
+#' @field adjustedSelected A \link[=data.frame]{data.frame} representing the intial random selection of accesions, adjusted for the
+#' set of \code{preselected} accessions by using the defined \code{adjustedGroupMethod}, with the accession names as labels and the following columns: \itemize{
+#' \item \code{contains}: the (positive) number of accessions that have this accessions as the closest random selected accession
+#' \item \code{preselects}: the number of these closest accessions that were preselected
+#' \item \code{preselected}: a boolean indicating if the random selected accession was preselected
+#' \item \code{random}: a boolean indiciating if the selected accesion was initially randomly chosen or introduced later by the applied \code{adjustedGroupMethod}.
+#' }
 #' @field algorithm The applied algorithm to compute the solution.
 #' @field core A \link[=data.frame]{data.frame} representing the core collection with the accession names as labels and in the first and only column a boolean value indicating whether or not the accession was preselected.
 #' @field coreSelectMethod The applied method to select the core accessions based on the computed \code{adjustedBasedGroups}.
 #' @field distanceMatrix The distance matrix; this will allways be a \link[stats:dist]{dist} object.
-#' @field measure The measure used in the defined \code{method} to compute the core collection.
-#' @field measures A \link[=data.frame]{data.frame} with the available \code{methods} as labels and in the first and only column the measures for these methods.
 #' @field n The required core size
-#' @field pop todo
+#' @field pop A \link[=data.frame]{data.frame} representing the whole collection with the accession names as labels and in the first and only column:\itemize{
+#' \item \code{result}: a string describing if the accession is marked as \code{other} or as included in the \code{core}, and if in the \code{core} because it was \code{preselected} or because of the applied \code{coreSelectMethod}.
+#' }
 #' @field preselected The list of preselected accessions.
-#' @field randomBasedGroups todo
-#' @field randomSelected todo
+#' @field randomBasedGroups A list with the initial division into groups based on the initial random selection of accessions described by \code{randomSelected}. Each item describes all accessions that have the random selected accesion from the label as the nearest neighbour, including the random selected accession.
+#' @field randomSelected A \link[=data.frame]{data.frame} representing the intial random selection of accesions with the accession names as labels and the following columns: \itemize{
+#' \item \code{contains}: the (positive) number of accessions that have this accessions as the closest random selected accession
+#' \item \code{preselects}: the number of these closest accessions that were preselected
+#' \item \code{preselected}: a boolean indicating if the random selected accession was preselected
+#' \item \code{random}: a boolean indiciating if the random selected accesion was randomly chosen. This will always be TRUE for this field, but including this column makes the output comparable with \code{adjustedSelected}.
+#' }
 #' @field seed The last applied seed for the randomizer. This will only change when the \code{recompute()} method
 #' is called and no initial \code{seed} is defined.
 #' @section Methods:
 #' \describe{
 #'   \item{\code{alternativeCore(n)}}{The \code{n}th alternative core with \code{n} a positive integer. Provides for each non-preselected accession in the core, if available, the \code{n}th nearest accession from within the same group as an alternative.}
 #'   \item{\code{clone(deep = FALSE)}}{The default \link{R6Class} clone method.}
-#'   \item{\code{initialize()}}{Initialisation of the object, is called automatically on creation or recomputing.}
+#'   \item{\code{initialize(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed)}}{Initialisation of the object, is called automatically on creation or recomputing.}
+#'   \item{\code{measure(coreSelectMethod)}}{The measure for the provided \code{coreSelectMethod}. If no value is provided, the current selected \code{coreSelectMethod} is used. The measure is used by the algorithm to compute the core collection.}
+#'   \item{\code{measures()}}{A \link[=data.frame]{data.frame} with the available \code{coreSelectMethods} as labels and in the first and only column the measures for these methods.}
 #'   \item{\code{recompute()}}{Recompute the core collection: If on initialisation of the object a seed was provided, this same seed will be applied and therefore the same core collection will be created. Otherwise, a new seed is generated, resulting in a new core.}
 #'   \item{\code{print()}}{Create a summary of the core collection object, same as \code{summary()}.}
 #'   \item{\code{summary()}}{Create a summary of the core collection object, same as \code{print()}.}
