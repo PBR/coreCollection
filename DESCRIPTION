@@ -24,7 +24,7 @@ Collate:
   coreSelection.R
   RcppExports.R
 Suggests: 
-  testthat,
+  testthat (>= 2.1.1),
   vcfR,
   adegenet
 RoxygenNote: 6.1.1

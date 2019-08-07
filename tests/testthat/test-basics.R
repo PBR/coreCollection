@@ -120,22 +120,22 @@ test_that("seed works", {
   expect_false(comparisonWithoutSeed)
 })
 
-test_that("preselected set works",{
-  nGroup <- 5
-  nGroups <- 10
-  n <- nGroup * nGroups
-  m <- create_distances(nGroup, nGroups, 3.0)
-  dm <- as.dist(m, upper=FALSE)
-  for(s in (nGroup+1):(n-1)) {
-    preselected <- sort(as.character(c((s-nGroup):(s-1))))
-    cc <- quiet(CoreCollection(dm, s, preselected))
-    #check set of preselected
-    preselected2 <- sort(cc$preselected)
-    preselected3 <- sort(rownames(cc$core)[(cc$core)$preselected == TRUE])
-    expect_equal(preselected, preselected2)
-    expect_equal(preselected, preselected3)
-  }
-})
+ test_that("preselected set works",{
+   nGroup <- 5
+   nGroups <- 10
+   n <- nGroup * nGroups
+   m <- create_distances(nGroup, nGroups, 3.0)
+   dm <- as.dist(m, upper=FALSE)
+   for(s in (nGroup+1):(n-1)) {
+     preselected <- sort(as.character(c((s-nGroup):(s-1))))
+     cc <- quiet(CoreCollection(dm, s, preselected))
+     #check set of preselected
+     preselected2 <- sort(cc$preselected)
+     preselected3 <- sort(rownames(cc$core)[(cc$core)$preselected == TRUE])
+     expect_equal(preselected, preselected2)
+     expect_equal(preselected, preselected3)
+   }
+ })
 
 test_that("method a-ne works", {
   nGroup <- 4

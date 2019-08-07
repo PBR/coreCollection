@@ -19,7 +19,7 @@ double CoreMethodAccessionNearestEntry::measure (Rcpp::NumericMatrix & dm, Rcpp:
     d = 0.0;
     for(int j=0;j<c.length(); j++) {
       nd = dm[nl+c[j]];
-      if((j==0) || (d>nd)) {
+      if(((j==0)&&(c[j]!=i)) || (d>nd)) {
         d = nd;
       }
     }
