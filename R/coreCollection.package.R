@@ -14,4 +14,9 @@
 #' @references Odong, T.L. (2012) Quantative metods for sampling of germplasm collections -
 #' Getting the best out of molecular markers when creating core collections. PhD diss., Wageningen
 #' University and Research, Wageningen, The Netherlands. \url{http://edepot.wur.nl/212422}\cr
+#'
+#' @references Jansen, J & Hintum, Theo. (2007) Genetic distance sampling: A novel
+#' sampling method for obtaining core collections using genetic distances with an
+#' application to cultivated lettuce. TAG. Theoretical and applied genetics.
+#' Theoretische und angewandte Genetik. 114. 421-8. 10.1007/s00122-006-0433-9\cr
 NULL
