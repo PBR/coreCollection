@@ -22,7 +22,8 @@ Theoretische und angewandte Genetik. 114. 421-8. 10.1007/s00122-006-0433-9\cr
 - \pkg{vcfR} provides a suite of tools for input and output of variant call format (VCF) files, manipulation of their content and visualization.\cr
 - \pkg{adegenet} provides the \code{genlight} class for genome-wide SNP data, and includes a method to create a distance matrix.
 
-Other core collection: \code{\link{CoreCollection}}
+Other core collection: 
+\code{\link{CoreCollection}()}
 }
 \author{
 Matthijs Brouwer <matthijs.brouwer@wur.nl>

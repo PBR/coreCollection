@@ -1,7 +1,7 @@
 Package: coreCollection
 Type: Package
 Title: Core Collection
-Version: 0.9.0
+Version: 0.9.1
 Author: Matthijs Brouwer
 Maintainer: Matthijs Brouwer <matthijs.brouwer@wur.nl>
 Description: 
@@ -27,4 +27,4 @@ Suggests:
   testthat (>= 2.1.1),
   vcfR,
   adegenet
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1

@@ -276,7 +276,6 @@ setOldClass("dist")
     alternativeCore = function(n) {
       if(private$initialised) {
         if(!missing(n) && !is.null(n)) {
-
           return(.computeAlternativeCore(self, n))
         } else {
           stop("n is required")
@@ -539,7 +538,7 @@ setOldClass("dist")
 #' is called and no initial \code{seed} is defined.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{alternativeCore(n)}}{The \code{n}th alternative core with \code{n} a positive integer. Provides for each non-preselected accession in the core, if available, the \code{n}th nearest accession from within the same group as an alternative.}
+#'   \item{\code{alternativeCore(n)}}{The \code{n}th alternative core with \code{n} a positive integer. Provides for each accession in the core, if available, the \code{n}th nearest accession from within the same group as an alternative.}
 #'   \item{\code{clone(deep = FALSE)}}{The default \link{R6Class} clone method.}
 #'   \item{\code{initialize(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed)}}{Initialisation of the object, is called automatically on creation or recomputing.}
 #'   \item{\code{measure(coreSelectMethod)}}{The measure for the provided \code{coreSelectMethod}. If no value is provided, the current selected \code{coreSelectMethod} is used. The measure is used by the algorithm to compute the core collection.}

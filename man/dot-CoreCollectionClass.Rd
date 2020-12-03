@@ -4,11 +4,114 @@
 \name{.CoreCollectionClass}
 \alias{.CoreCollectionClass}
 \title{The CoreCollection Class}
-\format{A \code{\link{R6Class}} generator object}
-\usage{
-.CoreCollectionClass
+\format{
+A \code{\link{R6Class}} generator object
 }
 \description{
 The CoreCollection Class
+
+The CoreCollection Class
 }
 \keyword{internal}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-recompute}{\code{.CoreCollectionClass$recompute()}}
+\item \href{#method-alternativeCore}{\code{.CoreCollectionClass$alternativeCore()}}
+\item \href{#method-new}{\code{.CoreCollectionClass$new()}}
+\item \href{#method-print}{\code{.CoreCollectionClass$print()}}
+\item \href{#method-summary}{\code{.CoreCollectionClass$summary()}}
+\item \href{#method-measure}{\code{.CoreCollectionClass$measure()}}
+\item \href{#method-measures}{\code{.CoreCollectionClass$measures()}}
+\item \href{#method-clone}{\code{.CoreCollectionClass$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-recompute"></a>}}
+\if{latex}{\out{\hypertarget{method-recompute}{}}}
+\subsection{Method \code{recompute()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$recompute()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-alternativeCore"></a>}}
+\if{latex}{\out{\hypertarget{method-alternativeCore}{}}}
+\subsection{Method \code{alternativeCore()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$alternativeCore(n)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$new(
+  distanceMatrix,
+  n,
+  preselected,
+  coreSelectMethod,
+  adjustedGroupMethod,
+  algorithm,
+  seed
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
+\subsection{Method \code{print()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$print(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-summary}{}}}
+\subsection{Method \code{summary()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$summary(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-measure"></a>}}
+\if{latex}{\out{\hypertarget{method-measure}{}}}
+\subsection{Method \code{measure()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$measure(coreSelectMethod)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-measures"></a>}}
+\if{latex}{\out{\hypertarget{method-measures}{}}}
+\subsection{Method \code{measures()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$measures(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

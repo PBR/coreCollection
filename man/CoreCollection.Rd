@@ -4,9 +4,15 @@
 \alias{CoreCollection}
 \title{The CoreCollection class}
 \usage{
-CoreCollection(distanceMatrix, n, preselected = c(),
-  coreSelectMethod = "A-NE", adjustedGroupMethod = "split",
-  algorithm = "randomDescent", seed = NULL)
+CoreCollection(
+  distanceMatrix,
+  n,
+  preselected = c(),
+  coreSelectMethod = "A-NE",
+  adjustedGroupMethod = "split",
+  algorithm = "randomDescent",
+  seed = NULL
+)
 }
 \arguments{
 \item{distanceMatrix}{a distance matrix; can be either a \link[=matrix]{matrix} or a \link[stats:dist]{dist}}
@@ -89,7 +95,7 @@ is called and no initial \code{seed} is defined.}
 \section{Methods}{
 
 \describe{
-  \item{\code{alternativeCore(n)}}{The \code{n}th alternative core with \code{n} a positive integer. Provides for each non-preselected accession in the core, if available, the \code{n}th nearest accession from within the same group as an alternative.}
+  \item{\code{alternativeCore(n)}}{The \code{n}th alternative core with \code{n} a positive integer. Provides for each accession in the core, if available, the \code{n}th nearest accession from within the same group as an alternative.}
   \item{\code{clone(deep = FALSE)}}{The default \link{R6Class} clone method.}
   \item{\code{initialize(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed)}}{Initialisation of the object, is called automatically on creation or recomputing.}
   \item{\code{measure(coreSelectMethod)}}{The measure for the provided \code{coreSelectMethod}. If no value is provided, the current selected \code{coreSelectMethod} is used. The measure is used by the algorithm to compute the core collection.}
@@ -135,6 +141,7 @@ ccp$core
 # autoplot(prcomp(dist), data=data, colour="core", shape="preselected")
 }
 \seealso{
-Other core collection: \code{\link{coreCollection-package}}
+Other core collection: 
+\code{\link{coreCollection-package}}
 }
 \concept{core collection}

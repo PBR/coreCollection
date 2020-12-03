@@ -57,22 +57,25 @@
 
 .computeAlternativeCore <- function(object, n) {
   if(!missing(n) && !is.null(n)) {
-    result <- rep(NA, nrow(object$core))
+    alternativeCore <- object$core
+    alternativeCore[[paste0("alternative.",n)]] <- NA
     dm <- as.matrix(object$distanceMatrix)
     groups <- object$adjustedBasedGroups
     list <- labels(groups)
     for(i in 1:length(list)) {
       groupEntries <- unlist(groups[list[i]])
       if(length(groupEntries)>n) {
+        #get core entry
+        coreEntry <- groupEntries[groupEntries %in% rownames(object$core)][[1]]
         #remove main entry
-        groupEntries <- groupEntries[groupEntries!=list[i]]
+        groupEntries <- groupEntries[!(groupEntries %in% rownames(object$core))]
         #compute distances
-        distances <- unlist(lapply(groupEntries, function(x) {return(dm[list[i],x])}))
+        distances <- unlist(lapply(groupEntries, function(x) {return(dm[list[[i]],x])}))
         #select nth from ordered entries
-        result[i] <- groupEntries[order(distances)][n]
+        alternativeCore[[coreEntry,paste0("alternative.",n)]] <- groupEntries[order(distances)][n]
       }
     }
-    return(result)
+    return(alternativeCore)
   }
 }
 
