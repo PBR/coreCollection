@@ -13,11 +13,11 @@ Rcpp::IntegerVector CoreMethodEntryNearestEntry::adjustRandomNeighbour (Rcpp::In
   for(int j=0; j<n; j++) {
     if(j!=i) {
       nl = c[i]*N;
-      for(int j=i+1;j<(i+l); j++) {
-        nd = distanceMatrix[nl+c[(j % l)]];
+      for(int j=i+1;j<(i+n); j++) {
+        nd = distanceMatrix[nl+c[(j % n)]];
         if((j==i+1) || (d>nd)) {
           d = nd;
-          k = j;
+          k = j % n;
         }
       }
     }

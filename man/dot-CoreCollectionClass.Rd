@@ -16,19 +16,19 @@ The CoreCollection Class
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-recompute}{\code{.CoreCollectionClass$recompute()}}
-\item \href{#method-alternativeCore}{\code{.CoreCollectionClass$alternativeCore()}}
-\item \href{#method-new}{\code{.CoreCollectionClass$new()}}
-\item \href{#method-print}{\code{.CoreCollectionClass$print()}}
-\item \href{#method-summary}{\code{.CoreCollectionClass$summary()}}
-\item \href{#method-measure}{\code{.CoreCollectionClass$measure()}}
-\item \href{#method-measures}{\code{.CoreCollectionClass$measures()}}
-\item \href{#method-clone}{\code{.CoreCollectionClass$clone()}}
+\item \href{#method-coreCollection-recompute}{\code{.CoreCollectionClass$recompute()}}
+\item \href{#method-coreCollection-alternativeCore}{\code{.CoreCollectionClass$alternativeCore()}}
+\item \href{#method-coreCollection-new}{\code{.CoreCollectionClass$new()}}
+\item \href{#method-coreCollection-print}{\code{.CoreCollectionClass$print()}}
+\item \href{#method-coreCollection-summary}{\code{.CoreCollectionClass$summary()}}
+\item \href{#method-coreCollection-measure}{\code{.CoreCollectionClass$measure()}}
+\item \href{#method-coreCollection-measures}{\code{.CoreCollectionClass$measures()}}
+\item \href{#method-coreCollection-clone}{\code{.CoreCollectionClass$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-recompute"></a>}}
-\if{latex}{\out{\hypertarget{method-recompute}{}}}
+\if{html}{\out{<a id="method-coreCollection-recompute"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-recompute}{}}}
 \subsection{Method \code{recompute()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$recompute()}\if{html}{\out{</div>}}
@@ -36,8 +36,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-alternativeCore"></a>}}
-\if{latex}{\out{\hypertarget{method-alternativeCore}{}}}
+\if{html}{\out{<a id="method-coreCollection-alternativeCore"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-alternativeCore}{}}}
 \subsection{Method \code{alternativeCore()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$alternativeCore(n)}\if{html}{\out{</div>}}
@@ -45,8 +45,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-coreCollection-new"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$new(
@@ -62,8 +62,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-coreCollection-print"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-print}{}}}
 \subsection{Method \code{print()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$print(...)}\if{html}{\out{</div>}}
@@ -71,8 +71,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-summary"></a>}}
-\if{latex}{\out{\hypertarget{method-summary}{}}}
+\if{html}{\out{<a id="method-coreCollection-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-summary}{}}}
 \subsection{Method \code{summary()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$summary(...)}\if{html}{\out{</div>}}
@@ -80,8 +80,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-measure"></a>}}
-\if{latex}{\out{\hypertarget{method-measure}{}}}
+\if{html}{\out{<a id="method-coreCollection-measure"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-measure}{}}}
 \subsection{Method \code{measure()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$measure(coreSelectMethod)}\if{html}{\out{</div>}}
@@ -89,8 +89,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-measures"></a>}}
-\if{latex}{\out{\hypertarget{method-measures}{}}}
+\if{html}{\out{<a id="method-coreCollection-measures"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-measures}{}}}
 \subsection{Method \code{measures()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{.CoreCollectionClass$measures(...)}\if{html}{\out{</div>}}
@@ -98,8 +98,8 @@ The CoreCollection Class
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-coreCollection-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-coreCollection-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

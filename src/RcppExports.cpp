@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // computeRandomSelection
 Rcpp::IntegerVector computeRandomSelection(Rcpp::NumericMatrix& dist, int requiredN, Rcpp::IntegerVector& preselected, int seed);
 RcppExport SEXP _coreCollection_computeRandomSelection(SEXP distSEXP, SEXP requiredNSEXP, SEXP preselectedSEXP, SEXP seedSEXP) {
