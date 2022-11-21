@@ -9,7 +9,7 @@
 This package can be used to create a \link{CoreCollection} object.
 }
 \references{
-Odong, T.L. (2012) Quantative metods for sampling of germplasm collections -
+Odong, T.L. (2012) Quantative methods for sampling of germplasm collections -
 Getting the best out of molecular markers when creating core collections. PhD diss., Wageningen
 University and Research, Wageningen, The Netherlands. \url{http://edepot.wur.nl/212422}\cr
 

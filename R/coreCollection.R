@@ -496,16 +496,16 @@ setOldClass("dist")
 #' \code{adjustedGroupMethod}. Then, using the \code{coreSelectMethod} in the \code{algorithm}, the
 #' core accessions within these groups are calculated, resulting in the final core collection.
 #'
-#' @param distanceMatrix a distance matrix; can be either a \link[=matrix]{matrix} or a \link[stats:dist]{dist}
-#' @param n the number of items in the core
-#' @param preselected an optional list of preselected accessions to be included in the core collection;
+#' @param distanceMatrix A distance matrix; can be either a \link[=matrix]{matrix} or a \link[stats:dist]{dist}
+#' @param n The number of items in the core
+#' @param preselected An optional list of preselected accessions to be included in the core collection;
 #' the provided accessions should occur in the labels or rownames of the provided distanceMatrix
 #' @param coreSelectMethod The method for \link[coreCollection:computeCore]{computing} core accessions within the groups:
 #' \code{A-NE} (accession nearest entry), \code{E-NE} (entry nearest entry) or \code{E-E} (entry entry)
 #' @param adjustedGroupMethod The method to handle adjusting groups when multiple preselected accessions occur within a single group:
 #' \code{split} to just split the initial groups with multiple accessions or \code{recompute} to recompute the division of
 #' accessions over the groups.
-#' @param algorithm algorithm applied to \link[coreCollection:computeCore]{compute} a solution: currently, only \code{randomDescent} is available
+#' @param algorithm Algorithm applied to \link[coreCollection:computeCore]{compute} a solution: currently, only \code{randomDescent} is available
 #' @param seed The seed used when generating the core collection. If no seed is provided, a random
 #' seed is chosen and each time the \code{recompute()} method is called on the object, a new seed will be used.
 #' @field adjustedBasedGroups A list describing the initial random division of all accessions into groups, adjusted for the

@@ -19,3 +19,4 @@
 #' sampling method for obtaining core collections using genetic distances with an
 #' application to cultivated lettuce. TAG. Theoretical and applied genetics.
 #' Theoretische und angewandte Genetik. 114. 421-8. 10.1007/s00122-006-0433-9\cr
+NULL
