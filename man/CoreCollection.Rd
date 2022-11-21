@@ -108,6 +108,7 @@ is called and no initial \code{seed} is defined.}
 
 \examples{
 # Get a vcf-file
+if("vcfR" \%in\% rownames(installed.packages()) == FALSE) {install.packages("vcfR", dep = TRUE)}
 library(vcfR)
 vcfFile <- tempfile()
 vcfFileSource <- paste0(
