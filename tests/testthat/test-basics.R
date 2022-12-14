@@ -131,7 +131,7 @@ test_that("seed works", {
      cc <- quiet(CoreCollection(dm, s, preselected))
      #check set of preselected
      preselected2 <- sort(cc$preselected)
-     preselected3 <- sort(rownames(cc$core)[(cc$core)$preselected == TRUE])
+     preselected3 <- sort(as.character(rownames(cc$core))[(cc$core)$preselected == TRUE])
      expect_equal(preselected, preselected2)
      expect_equal(preselected, preselected3)
    }

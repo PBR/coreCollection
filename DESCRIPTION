@@ -1,7 +1,7 @@
 Package: coreCollection
 Type: Package
 Title: Core Collection
-Version: 0.9.3
+Version: 0.9.5
 Authors@R: 
   c(person(given = "Matthijs",
            family = "Brouwer",
@@ -17,22 +17,19 @@ Description:
   Create Core Collection.
 License: GPL (>=2)
 Encoding: UTF-8
-LazyData: true
-Depends:
-  R (>= 3.5)
-LinkingTo: 
-  Rcpp
-Imports: 
-  Rcpp (>= 1.0.0),
-  R6 (>= 2.4.0),
-  methods
-Collate:
-  coreCollection.package.R
-  coreCollection.R
-  coreSelection.R
-  RcppExports.R
+Depends: R (>= 3.5)
+LinkingTo: Rcpp
+Imports: Rcpp (>= 1.0.0), R6 (>= 2.4.0), methods
+Collate: coreCollection.package.R coreCollection.R coreSelection.R
+        RcppExports.R
 Suggests: 
-  testthat (>= 2.1.1),
-  vcfR,
-  adegenet
+    testthat (>= 3.0.0),
+    vcfR,
+    adegenet
 RoxygenNote: 7.2.2
+NeedsCompilation: yes
+Packaged: 2022-12-14 10:26:48 UTC; matthijs
+Author: Matthijs Brouwer [aut, cre] (<https://orcid.org/0000-0001-8183-0484>),
+  Reinhoud Blok, de [ctb]
+Maintainer: Matthijs Brouwer <matthijs.brouwer@wur.nl>
+Config/testthat/edition: 3
