@@ -553,39 +553,46 @@ methods::setOldClass("dist")
 #' @family core collection
 #' @export
 #' @examples
+#' \donttest{
 #' # Get a vcf-file
-#' # if("vcfR" %in% rownames(installed.packages()) == FALSE) {install.packages("vcfR", dep = TRUE)}
-#' # library(vcfR)
-#' # vcfFile <- tempfile()
-#' # vcfFileSource <- paste0(
-#' #   "ftp://ftp-trace.ncbi.nih.gov/",
-#' #   "1000genomes/ftp/pilot_data/release/2010_07",
-#' #   "/exon/snps/CEU.exon.2010_03.genotypes.vcf.gz")
-#' # download.file(vcfFileSource, vcfFile)
-#' # vcf <- read.vcfR(vcfFile)
-#' # file.remove(vcfFile)
+#' if("vcfR" %in% rownames(installed.packages()) == FALSE) {
+#'   install.packages("vcfR", dep = TRUE)
+#' }
+#' library(vcfR)
+#' vcfFile <- tempfile()
+#' vcfFileSource <- paste0(
+#'   "ftp://ftp-trace.ncbi.nih.gov/",
+#'   "1000genomes/ftp/pilot_data/release/2010_07",
+#'   "/exon/snps/CEU.exon.2010_03.genotypes.vcf.gz")
+#' download.file(vcfFileSource, vcfFile)
+#' vcf <- read.vcfR(vcfFile)
+#' file.remove(vcfFile)
 #'
 #' # Create a distance object
-#' # gl <- vcfR2genlight(vcf)
-#' # dist <- dist(gl)
+#' gl <- vcfR2genlight(vcf)
+#' dist <- dist(gl)
 #'
 #' # Create a Core Collection
-#' # n = 10
-#' # cc <- CoreCollection(dist, n)
-#' # cc$core
+#' n = 10
+#' cc <- CoreCollection(dist, n)
+#' cc$core
 #'
 #' # Create a Core Collection with preselected accessions
-#' # preselected = sample(labels(dist), 5)
-#' # ccp <- CoreCollection(dist, n, preselected)
-#' # preselected
-#' # ccp$core
+#' preselected = sample(labels(dist), 5)
+#' ccp <- CoreCollection(dist, n, preselected)
+#' preselected
+#' ccp$core
 #'
-#' # # Visualize the Core Collection
-#' # library(ggfortify)
-#' # data = setNames(data.frame(matrix(ncol=2,nrow=attr(dist,"Size"))), c("core","preselected"))
-#' # data$core <- labels(dist) %in% rownames(ccp$core)
-#' # data$preselected <- labels(dist) %in% preselected
-#' # autoplot(prcomp(dist), data=data, colour="core", shape="preselected")
+#' # Visualize the Core Collection
+#' if("ggfortify" %in% rownames(installed.packages()) == FALSE) {
+#'   install.packages("ggfortify", dep = TRUE)
+#' }
+#' library(ggfortify)
+#' data = setNames(data.frame(matrix(ncol=2,nrow=attr(dist,"Size"))), c("core","preselected"))
+#' data$core <- labels(dist) %in% rownames(ccp$core)
+#' data$preselected <- labels(dist) %in% preselected
+#' autoplot(prcomp(dist), data=data, colour="core", shape="preselected")
+#' }
 
 CoreCollection <- function(distanceMatrix, n, preselected=c(), coreSelectMethod="A-NE", adjustedGroupMethod="split", algorithm="randomDescent", seed=NULL) {
   return(.CoreCollectionClass$new(distanceMatrix, n, preselected, coreSelectMethod, adjustedGroupMethod, algorithm, seed))

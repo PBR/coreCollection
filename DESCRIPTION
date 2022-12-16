@@ -13,8 +13,11 @@ Authors@R:
            email = "reinhoud.deblok@wur.nl",
            role = "ctb"))
 Description: 
-  Core Collection
-  Create Core Collection.
+  This package can be used to create a Core Collection based on a distance matrix and applying
+  the A-NE (accession nearest entry), E-NE (entry nearest entry) or E-E (entry entry) method.
+  Optionally a list of preselected accessions to be included into the core can be set.
+  For each accession in the computed core, if available nearby accessions are retrievable 
+  that can be used as an alternative.
 License: GPL (>=2)
 Encoding: UTF-8
 Depends: R (>= 3.5)
@@ -25,7 +28,8 @@ Collate: coreCollection.package.R coreCollection.R coreSelection.R
 Suggests: 
     testthat (>= 3.0.0),
     vcfR,
-    adegenet
+    adegenet,
+    ggfortify
 RoxygenNote: 7.2.2
 NeedsCompilation: yes
 Packaged: 2022-12-14 10:26:48 UTC; matthijs
