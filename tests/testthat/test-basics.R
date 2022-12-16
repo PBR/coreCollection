@@ -99,6 +99,7 @@ test_that("size works for constructed distanceMatrices", {
 })
 
 test_that("seed works", {
+  skip_on_cran()
   nGroup <- 5
   nGroups <- 10
   seed <- 1234567
@@ -119,6 +120,7 @@ test_that("seed works", {
 })
 
  test_that("preselected set works",{
+   testthat::skip_on_cran()
    nGroup <- 5
    nGroups <- 10
    n <- nGroup * nGroups
