@@ -3,4 +3,5 @@
 export(CoreCollection)
 importFrom(R6,R6Class)
 importFrom(Rcpp,evalCpp)
+importFrom(methods,setOldClass)
 useDynLib(coreCollection)

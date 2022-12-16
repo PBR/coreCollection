@@ -156,7 +156,7 @@ Rcpp::IntegerVector CoreSelection::computeRandomSelection(Rcpp::NumericMatrix & 
   int estimateBase = requiredN;
   double estimateR = estimateRadius(dist, estimateBase);
   //nothing selected
-  Rcpp::IntegerVector selected = NULL;
+  Rcpp::IntegerVector selected = Rcpp::IntegerVector(0);
   int n = -1;
   int mainLoopCounterMaximum = 100;
   //minimum steps necessary to compute sd and mu for estimate

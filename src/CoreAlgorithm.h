@@ -8,7 +8,7 @@ class CoreAlgorithm {
   public:
     virtual Rcpp::IntegerVector getCore (CoreMethod &m) {
       Rcpp::Rcout << "Call to default getCore, should not happen!" << std::endl;
-      return NULL;
+      return Rcpp::IntegerVector(0);
     }
     CoreAlgorithm();
 };

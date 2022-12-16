@@ -77,7 +77,8 @@ Rcpp::IntegerVector computeAdjustedSelectionUsingSplitMethod(Rcpp::NumericMatrix
     int N = dist.nrow();
     //initialise new
     Rcpp::IntegerVector newGroups(N);
-    double newDistances[N], newDistance;
+    double newDistance;
+    std::vector<double> newDistances(N);
     for(i=0; i<N; i++) {
       newGroups[i] = groups[i];
       newDistances[i] = 0.0;
@@ -93,7 +94,7 @@ Rcpp::IntegerVector computeAdjustedSelectionUsingSplitMethod(Rcpp::NumericMatrix
           newDistances[i] = 0.0;
         } else if(groups[i]==selectedGroup) {
           newDistance = dist[nl+preselected[j]];
-          if((newGroups[i]==selectedGroup) & (newDistance<newDistances[i])) {
+          if((newGroups[i]==selectedGroup) && (newDistance<newDistances[i])) {
             newGroups[i]=preselected[j];
             newDistances[i]=newDistance;
           }
@@ -131,7 +132,7 @@ Rcpp::IntegerVector computeCore(std::string algorithm, std::string method, Rcpp:
   if(algorithm==ALGORITHM_RANDOM_DESCENT) {
     a = new CoreAlgorithmRandomDescent();
   } else {
-    return NULL;
+    return Rcpp::IntegerVector(0);
   }
   if(method==METHOD_ACCESSION_NEAREST_ENTRY) {
     m = new CoreMethodAccessionNearestEntry(dist, groups);
@@ -140,7 +141,7 @@ Rcpp::IntegerVector computeCore(std::string algorithm, std::string method, Rcpp:
   } else if(method==METHOD_ENTRY_ENTRY) {
     m = new CoreMethodEntryEntry(dist, groups);
   } else {
-    return NULL;
+    return Rcpp::IntegerVector(0);
   }
   Rcpp::IntegerVector result(clone(a->getCore(*m)));
   delete m;

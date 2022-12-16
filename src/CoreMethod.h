@@ -25,7 +25,7 @@ class CoreMethod {
     std::string getMethod();
     virtual Rcpp::IntegerVector getInitial() {
       Rcpp::Rcout << "Call to default getInitial, should not happen!" << std::endl;
-      return NULL;
+      return Rcpp::IntegerVector(0);
     };
     static double measure (Rcpp::NumericMatrix & dm, Rcpp::IntegerVector & c) {
       Rcpp::Rcout << "Call to default measure, should not happen!" << std::endl;

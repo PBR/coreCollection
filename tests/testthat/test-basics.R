@@ -1,5 +1,3 @@
-context("test-basics")
-
 quiet <- function(x) {
   sink(tempfile())
   on.exit(sink())
@@ -144,7 +142,7 @@ test_that("method a-ne works", {
   m <- create_special_distances(nGroup, nGroups, 3.0)
   dm <- as.dist(m, upper=FALSE)
   cc <- quiet(CoreCollection(dm, nGroups, coreSelectMethod = "A-NE"))
-  expect_equivalent(rownames(cc$core), as.character(seq(1,nGroup*nGroups,nGroup)))
+  expect_equal(rownames(cc$core), as.character(seq(1,nGroup*nGroups,nGroup)))
 })
 
 test_that("method e-ne works", {
@@ -154,7 +152,7 @@ test_that("method e-ne works", {
   m <- create_special_distances(nGroup, nGroups, 3.0)
   dm <- as.dist(m, upper=FALSE)
   cc <- quiet(CoreCollection(dm, nGroups, coreSelectMethod = "E-NE"))
-  expect_equivalent(sort(rownames(cc$core)), sort(as.character(seq(2,nGroup*nGroups,nGroup))))
+  expect_equal(sort(rownames(cc$core)), sort(as.character(seq(2,nGroup*nGroups,nGroup))))
 })
 
 test_that("method e-e works", {
@@ -165,5 +163,5 @@ test_that("method e-e works", {
   m <- create_special_distances(nGroup, nGroups, 3.0)
   dm <- as.dist(m, upper=FALSE)
   cc <- quiet(CoreCollection(dm, nGroups, coreSelectMethod = "E-E"))
-  expect_equivalent(sort(rownames(cc$core)), sort(as.character(seq(2,nGroup*nGroups,nGroup))))
+  expect_equal(sort(rownames(cc$core)), sort(as.character(seq(2,nGroup*nGroups,nGroup))))
 })
